@@ -1,4 +1,4 @@
-package modelo;
+package com.hackathon.agenda.modelo;
 
 import java.util.ArrayList;
 import java.util.Comparator;

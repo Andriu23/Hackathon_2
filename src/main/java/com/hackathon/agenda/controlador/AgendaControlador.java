@@ -1,8 +1,8 @@
-package controlador;
+package com.hackathon.agenda.controlador;
 
-import modelo.Agenda;
-import modelo.Contacto;
-import vista.VentanaPrincipal;
+import com.hackathon.agenda.modelo.Agenda;
+import com.hackathon.agenda.modelo.Contacto;
+import com.hackathon.agenda.vista.VentanaPrincipal;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -35,13 +35,11 @@ public class AgendaControlador {
         // Boton limpiar
         vista.getBtnLimpiar().addActionListener(e -> limpiarFormulario());
 
-        // ActionListeners de los inputs.
-        // Al presionar Enter en el teléfono se agrega el contacto
-        vista.getTxtTelefono().addActionListener(e -> agregarContacto());
+        // ActionListeners de los inputs
 
         // Busqueda
         vista.getBtnBuscar().addActionListener(e -> buscarContacto());
-        vista.getTxtBuscar().addActionListener(e -> buscarContacto());
+
 
         // Eventos de selección de la tabla
         // Al seleccionar una fila se cargan sus datos en el formulario
@@ -228,7 +226,7 @@ public class AgendaControlador {
     }
 
     // Telefono
-    // Usa la misma regla que el modelo (Contacto.telefonoValido) para evitar inconsistencias
+    // Usa la misma regla que el com.hackathon.agenda.modelo (Contacto.telefonoValido) para evitar inconsistencias
     private boolean validarTelefono(String telefono) {
         if (telefono == null || telefono.isBlank()) {
             vista.mostrarError("El teléfono es obligatorio.");

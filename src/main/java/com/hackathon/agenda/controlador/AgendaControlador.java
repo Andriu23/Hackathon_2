@@ -219,8 +219,14 @@ public class AgendaControlador {
         if (nombre == null || nombre.isBlank()) {
             return "El nombre no puede estar vacío.";
         }
+        if (!nombre.strip().matches("[\\p{L} ]+")) {
+            return "El nombre no puede contener números ni símbolos.";
+        }
         if (apellido == null || apellido.isBlank()) {
             return "El apellido no puede estar vacío.";
+        }
+        if (!apellido.strip().matches("[\\p{L} ]+")) {
+            return "El apellido no puede contener números ni símbolos.";
         }
         return null;
     }

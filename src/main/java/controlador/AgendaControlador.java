@@ -1,44 +1,51 @@
 package controlador;
 
 public class AgendaControlador {
+    package controlador;
 
-    private final Agenda agenda;
-    private final VentanaPrincipal vista;
+    public class AgendaControlador {
 
-    // Constructor
-    public void AgendaControlador(Agenda agenda, VentanaPrincipal vista) {
-        this.agenda = agenda;
-        this.vista = vista;
+        private final Agenda agenda;
+        private final VentanaPrincipal vista;
 
-        configurarEventos();
-        actualizarTabla();
-    }
+        // Constructor
+        public AgendaControlador(Agenda agenda, VentanaPrincipal vista) {
+            this.agenda = agenda;
+            this.vista = vista;
 
-    // Configuración de eventos
-    private void configurarEventos() {
+            configurarEventos();
+            actualizarTabla();
+        }
 
-        // ActionListeners de los botones
+        // Configuración de eventos
+        private void configurarEventos() {
+
+            // ActionListeners de los botones
             // Boton agregar
+            vista.getBtnAgregar().addActionListener(e -> agregarContacto());
             // Boton modificar
+            vista.getBtnModificar().addActionListener(e -> modificarContacto());
             // Boton eliminar
+            vista.getBtnEliminar().addActionListener(e -> eliminarContacto());
             // Boton limpiar
+            vista.getBtnLimpiar().addActionListener(e -> limpiarFormulario());
 
-        // ActionListeners de los inputs
+            // ActionListeners de los inputs
+
             // Busqueda
 
-        // Eventos de selección de la tabla
 
+            // Eventos de selección de la tabla
 
-    }
+        }
 
-    // Operaciones de la agenda
-    private void agregarContacto() {
-    }
+        // Operaciones de la agenda
+        private void agregarContacto() {
+        }
 
-    private void buscarContacto() {
-    }
+        private void buscarContacto() {
+        }
 
-    private void modificarTelefono() {
     }
 
     private void eliminarContacto() {
@@ -61,6 +68,31 @@ public class AgendaControlador {
         return null;
     }
 
-        // Telefono
+    // Telefono
+
+    private boolean validarTelefono() {
+
+        String telefono = txtTelefono.getText().trim();
+
+        String regex = "^\\\\d{10}$";
+
+        if (telefono.isEmpty()) {
+            vista.mostrarEstado("El teléfono es obligatorio.", Color.RED);
+            return false;
+        }
+
+        if (!telefono.matches(regex)) {
+            vista.mostrarEstado(
+                    "Teléfono inválido. Numero de 10 digitos, solo numericos.",
+                    Color.RED
+            );
+            return false;
+        }
+
+        vista.mostrarEstado("Teléfono válido.", Color.GREEN);
+        return true;
+    }
+
+}
 
 }

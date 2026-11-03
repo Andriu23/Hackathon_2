@@ -49,25 +49,25 @@ El código está en `src/main/java/` y se divide en estos paquetes:
 ```
 com.hackathon.agenda/
 │
-├── modelo/
+├── com.hackathon.agenda.modelo/
 │   ├── Contacto.java           Datos de un contacto y sus validaciones
 │   └── Agenda.java             Lógica de negocio: guarda y gestiona los contactos
 │
-├── vista/
+├── com.hackathon.agenda.vista/
 │   ├── VentanaPrincipal.java   JFrame con el formulario, la tabla y el panel de estado
 │   └── VentanaPrincipal.form   Diseño visual de la ventana (GUI Designer de IntelliJ)
 │
-├── controlador/
-│   └── AgendaControlador.java  Escucha los eventos de la vista y coordina con el modelo
+├── com.hackathon.agenda.controlador/
+│   └── AgendaControlador.java  Escucha los eventos de la com.hackathon.agenda.vista y coordina con el com.hackathon.agenda.modelo
 │
-└── Main.java                   Crea el modelo, la vista y el controlador y los conecta
+└── Main.java                   Crea el com.hackathon.agenda.modelo, la com.hackathon.agenda.vista y el com.hackathon.agenda.controlador y los conecta
 ```
 
 La regla que seguimos para separar las capas:
 
-- El **modelo** no importa nada de `javax.swing`. No sabe que existe una ventana.
-- La **vista** no decide qué pasa cuando se hace clic en un botón. Solo muestra los componentes y los deja disponibles.
-- El **controlador** es el único que conecta las dos: escucha los eventos de la vista, le pide cosas al modelo y muestra el resultado.
+- El **com.hackathon.agenda.modelo** no importa nada de `javax.swing`. No sabe que existe una ventana.
+- La **com.hackathon.agenda.vista** no decide qué pasa cuando se hace clic en un botón. Solo muestra los componentes y los deja disponibles.
+- El **com.hackathon.agenda.controlador** es el único que conecta las dos: escucha los eventos de la com.hackathon.agenda.vista, le pide cosas al com.hackathon.agenda.modelo y muestra el resultado.
 
 ---
 
@@ -129,17 +129,17 @@ La ventana tiene estas partes:
 - **Tabla de contactos:** una `JTable` con las columnas Nombre, Apellido y Teléfono. Usa un `DefaultTableModel` en el que sobrescribimos `isCellEditable()` para que las celdas no se puedan editar directamente, y la tabla solo deja seleccionar una fila a la vez.
 - **Panel de estado:** muestra los mensajes de la aplicación. `mostrarError()` los pinta en rojo y `mostrarExito()` en verde.
 
-Para respetar el MVC, la vista no tiene ninguna lógica de botones. Solo expone sus componentes con getters (`getTxtNombre()`, `getBtnAgregar()`, `getTablaContactos()`, `getModeloTabla()`, etc.) para que el controlador les asigne los eventos. También tiene `limpiarCampos()`, que vacía el formulario y quita la selección de la tabla.
+Para respetar el MVC, la com.hackathon.agenda.vista no tiene ninguna lógica de botones. Solo expone sus componentes con getters (`getTxtNombre()`, `getBtnAgregar()`, `getTablaContactos()`, `getModeloTabla()`, etc.) para que el com.hackathon.agenda.controlador les asigne los eventos. También tiene `limpiarCampos()`, que vacía el formulario y quita la selección de la tabla.
 
 **Sincronización:** al seleccionar una fila de la tabla, sus datos llenan automáticamente el formulario para editar o borrar el contacto más rápido.
 
 ### 5. Controlador: la clase `AgendaControlador`
 
-El controlador recibe la `Agenda` y la `VentanaPrincipal` en su constructor y es el que las pone a trabajar juntas.
+El com.hackathon.agenda.controlador recibe la `Agenda` y la `VentanaPrincipal` en su constructor y es el que las pone a trabajar juntas.
 
 - **Eventos de los botones:** en `configurarEventos()` le asignamos un `ActionListener` a cada botón (Agregar, Modificar, Eliminar y Limpiar) usando expresiones lambda, por ejemplo `vista.getBtnAgregar().addActionListener(e -> agregarContacto())`. Así, cada botón llama a la operación que le corresponde.
-- **Validación de nombre y apellido:** el método `validarNombreYApellido()` recibe lo que la persona escribió en el formulario y revisa que el nombre y el apellido no estén vacíos ni tengan solo espacios (con `isBlank()`). Si algo está mal, devuelve el mensaje de error que se va a mostrar; si todo está bien, devuelve `null`. Lo hicimos así para que el método solo valide y sea el controlador el que decida cómo mostrar el mensaje. De esta forma se puede reutilizar en agregar, modificar, buscar y eliminar.
-- **Validación del teléfono:** el método `validarTelefono()` revisa que el campo no esté vacío y que tenga el formato correcto de 10 dígitos antes de mandarlo al modelo.
+- **Validación de nombre y apellido:** el método `validarNombreYApellido()` recibe lo que la persona escribió en el formulario y revisa que el nombre y el apellido no estén vacíos ni tengan solo espacios (con `isBlank()`). Si algo está mal, devuelve el mensaje de error que se va a mostrar; si todo está bien, devuelve `null`. Lo hicimos así para que el método solo valide y sea el com.hackathon.agenda.controlador el que decida cómo mostrar el mensaje. De esta forma se puede reutilizar en agregar, modificar, buscar y eliminar.
+- **Validación del teléfono:** el método `validarTelefono()` revisa que el campo no esté vacío y que tenga el formato correcto de 10 dígitos antes de mandarlo al com.hackathon.agenda.modelo.
 - **Mensajes al usuario:** cuando una validación falla, la operación se detiene ahí mismo (con `return`) y el mensaje se muestra en rojo en el panel de estado. Cuando la operación sale bien, se muestra en verde y se actualiza la tabla.
 
 ---
@@ -153,8 +153,8 @@ La aplicación no debe mostrar excepciones en la consola cuando le meten datos i
 
 Las validaciones están en **dos capas**, a propósito:
 
-1. **En el controlador:** antes de llamar al modelo, se revisa el formulario (nombre, apellido y teléfono) y se muestra el mensaje correspondiente. Esta es la validación que ve el usuario.
-2. **En el modelo:** `Contacto` vuelve a validar sus datos al crearse y al cambiar el teléfono. Es un cinturón de seguridad: aunque alguien se salte el formulario, el modelo no acepta datos inválidos.
+1. **En el com.hackathon.agenda.controlador:** antes de llamar al com.hackathon.agenda.modelo, se revisa el formulario (nombre, apellido y teléfono) y se muestra el mensaje correspondiente. Esta es la validación que ve el usuario.
+2. **En el com.hackathon.agenda.modelo:** `Contacto` vuelve a validar sus datos al crearse y al cambiar el teléfono. Es un cinturón de seguridad: aunque alguien se salte el formulario, el com.hackathon.agenda.modelo no acepta datos inválidos.
 
 ---
 

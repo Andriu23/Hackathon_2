@@ -1,6 +1,6 @@
 package controlador;
 
-public class AgrendaControlador {
+public class AgendaControlador {
 
     private final Agenda agenda;
     private final VentanaPrincipal vista;
@@ -49,7 +49,17 @@ public class AgrendaControlador {
 
     // Validaciones del formulario.
 
-        // Nombre y Apellidos
+    // Nombre y Apellidos
+    // Devuelve el mensaje de error, o null si nombre y apellido están bien
+    private String validarNombreYApellido(String nombre, String apellido) {
+        if (nombre == null || nombre.isBlank()) {
+            return "El nombre no puede estar vacío.";
+        }
+        if (apellido == null || apellido.isBlank()) {
+            return "El apellido no puede estar vacío.";
+        }
+        return null;
+    }
 
         // Telefono
 

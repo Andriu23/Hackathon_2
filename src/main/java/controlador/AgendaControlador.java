@@ -1,5 +1,8 @@
 package controlador;
 
+import modelo.Agenda;
+import vista.VentanaPrincipal;
+
 public class AgendaControlador {
 
     private final Agenda agenda;

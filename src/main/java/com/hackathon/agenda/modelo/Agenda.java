@@ -14,101 +14,104 @@ public class Agenda {
     }
 
     public Agenda(int capacidadMaxima) {
-
-        if (capacidadMaxima <= 0) { // Comprueba si la capacidad se válida
-            throw new IllegalArgumentException("La capacidad debe ser mayor que cero."); // Muestra un error si la capacidad no es válida
+        // Valida que la capacidad máxima sea mayor que cero.
+        if (capacidadMaxima <= 0) {
+            throw new IllegalArgumentException("La capacidad debe ser mayor que cero.");
         }
         this.capacidadMaxima = capacidadMaxima;
         this.contactos = new ArrayList<>();
     }
-
-    public boolean añadirContacto(Contacto c) { // Devuelve true o false - Recibe un objeto de tipo Contacto
-        if (c == null) { // Comprueba que no se este enviando un contacto vacío
+    // Registra un contacto si cumple las condiciones establecidas.
+    public boolean añadirContacto(Contacto c) {
+        if (c == null) {
             System.out.println("El contacto no puede ser nulo.");
             return false;
         }
-        if (agendaLlena()) { // Verifica si ya se alcanzó la capacidad máxima.
+        if (agendaLlena()) {
             System.out.println("La agenda esta llena.");
             return false;
         }
-        if (existeContacto(c)) { // Comprueba que el contacto no esté duplicado.
+        if (existeContacto(c)) {
             System.out.println("El contacto ya esta registrado.");
             return false;
         }
-        contactos.add(c); // Agrega el contacto a ls lista
-        return true; // Indica que el registro fue exitoso.
+        contactos.add(c);
+        return true;
     }
-
-    public boolean existeContacto(Contacto c) { // Devuelve true o false - Recibe el contacto que queremos buscar
+    // Comprueba si un contacto ya está registrado en la agenda.
+    public boolean existeContacto(Contacto c) {
         if (c == null) {
             return false;
         }
-        return contactos.contains(c); // Comprueba si ese contacto se encuentra en la lista.
+        return contactos.contains(c);
     }
-
-    public List<Contacto> listarContactos() { // Devuelve una lista de contactos y crea una copia de la lista original
+    // Devuelve una copia de los contactos ordenada alfabéticamente.
+    public List<Contacto> listarContactos() {
+        // Crea una copia para ordenar sin modificar la lista original.
         List<Contacto> listaOrdenada = new ArrayList<>(contactos);
-
-        listaOrdenada.sort( // Ordena los elementos de la lista
-                Comparator.comparing( // Establece el primer criterio
-                        Contacto::getNombre, String.CASE_INSENSITIVE_ORDER) // Utiliza el nombre como primer criterio y evita diferenciar mayúsculas y minúsculas
-                        .thenComparing( // Establece el segundo criterio
-                                Contacto::getApellido, String.CASE_INSENSITIVE_ORDER) // Utiliza el apellido como segundo criterio y evita diferenciar mayúsculas y minúsculas
+        // Ordena por nombre y apellido sin distinguir mayúsculas y minúsculas.
+        listaOrdenada.sort(
+                Comparator.comparing(
+                        Contacto::getNombre, String.CASE_INSENSITIVE_ORDER)
+                        .thenComparing(
+                                Contacto::getApellido, String.CASE_INSENSITIVE_ORDER)
         );
-        return listaOrdenada; // Devuelve una lista ordenada
+        return listaOrdenada;
     }
 
-    // Busca un contacto por nombre y apellido
+    // Busca un contacto por nombre y apellido y devuelve su teléfono.
     public String buscarContacto(String nombre, String apellido) {
-        if (nombre == null || apellido == null) { // Si algun campo esta vacío o es null
+        if (nombre == null || apellido == null) {
             return null;
         }
 
-        for (Contacto contacto : contactos) { // Recorre todos los contactos de la lista
+        for (Contacto contacto : contactos) {
+            // Elimina los espacios al inicio y al final, y compara sin distinguir mayúsculas.
             if (nombre.strip().equalsIgnoreCase(contacto.getNombre())
-                    && apellido.strip().equalsIgnoreCase(contacto.getApellido())) { // strip - Elimina todos los espacios al principio y final del texto y sin diferenciar mayúsculas y minúsculas
+                    && apellido.strip().equalsIgnoreCase(contacto.getApellido())) {
 
-                return contacto.getTelefono(); // Devuelve su teléfono si lo encuentra
+                return contacto.getTelefono();
             }
         }
 
         return null;
     }
-
-    public boolean eliminarContacto(Contacto c) { // Recibe un objeto de tipo contacto
-        if (c == null) { // Comprueba si el contacto existe para eliminar
-            return false; // Si el contacto en null - devuelve flase si no se encontro
+    // Elimina un contacto de la agenda.
+    public boolean eliminarContacto(Contacto c) {
+        if (c == null) {
+            return false;
         }
 
-        return contactos.remove(c); // Elimina el contacto si existe en la lista
+        return contactos.remove(c);
     }
-
+    // Modifica el teléfono de un contacto identificado por su nombre y apellido.
     public boolean modificarTelefono(String nombre, String apellido, String nuevoTelefono) {
-        if (nombre == null || apellido == null || nuevoTelefono == null) { // Comprueba que los campos no sean nulo.
+        if (nombre == null || apellido == null || nuevoTelefono == null) {
+            return false;
+        }
+        // Comprueba que el nuevo teléfono cumpla el formato establecido.
+        if (!Contacto.telefonoValido(nuevoTelefono)) {
             return false;
         }
 
-        if (!Contacto.telefonoValido(nuevoTelefono)) { // Comprueba si el número de contacto cumple el formato establecido.
-            return false;
-        }
-
-        for (Contacto contacto : contactos) { // Recorre todos los contactos almacenados en la lista.
-            if (contacto.getNombre().equalsIgnoreCase(nombre.strip()) // equalsIgnoreCase - Compara sin diferenciar mayúsculas y minúsculas.
+        for (Contacto contacto : contactos) {
+            // Compara el nombre y apellido sin distinguir mayúsculas y minúsculas.
+            if (contacto.getNombre().equalsIgnoreCase(nombre.strip())
                     && contacto.getApellido().equalsIgnoreCase(apellido.strip())) {
 
-                contacto.setTelefono(nuevoTelefono); // Modifica el teléfono del contacto.
+                contacto.setTelefono(nuevoTelefono);
                 return true;
             }
         }
 
-        return false; // Si termina de recorrer la lista y no encuentra el contacto, devuelve false.
+        return false;
     }
-
-    public boolean agendaLlena() { // Comprueba que la agenda ya ha alcanzado su limite máximo
-        return contactos.size() >= capacidadMaxima; // El metodo size() - Cuenta cuátos elementos hay guardados actualmente dentro de la lista
+    // Comprueba si se alcanzó la capacidad máxima.
+    public boolean agendaLlena() {
+        return contactos.size() >= capacidadMaxima;
     }
-
-    public int espaciosLibres() {  // Calcula y devuelve el número de espacios que todavía quedan disponibles
-        return capacidadMaxima - contactos.size(); // Comprueba cuantos espacios hay disponibles en la lista
+    // Calcula cuántos contactos todavía se pueden registrar.
+    public int espaciosLibres() {
+        return capacidadMaxima - contactos.size();
     }
 }

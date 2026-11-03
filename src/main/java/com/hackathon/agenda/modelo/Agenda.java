@@ -6,11 +6,11 @@ import java.util.List;
 
 public class Agenda {
 
-    private List<Contacto> contactos; // Declara una lista que almacena los objetos tipo Contacto
+    private List<Contacto> contactos;
     private int capacidadMaxima; // Guarda el número máximo de contactos que pueda almacenar la agenda
 
     public Agenda(){ // Constructor con capacidad predeterminada
-        this(10); // Llama a otro constructor y establece una capacidad de 10 contactos
+        this(10); // establece una capacidad de 10 contactos
     }
 
     public Agenda(int capacidadMaxima) {
@@ -36,7 +36,7 @@ public class Agenda {
             return false;
         }
         contactos.add(c); // Agrega el contacto a ls lista
-        return true; // Indica que el registro fue exitoso.
+        return true;
     }
 
     public boolean existeContacto(Contacto c) { // Devuelve true o false - Recibe el contacto que queremos buscar
@@ -49,31 +49,31 @@ public class Agenda {
     public List<Contacto> listarContactos() { // Devuelve una lista de contactos y crea una copia de la lista original
         List<Contacto> listaOrdenada = new ArrayList<>(contactos);
 
-        listaOrdenada.sort( // Ordena los elementos de la lista
-                Comparator.comparing( // Establece el primer criterio
-                        Contacto::getNombre, String.CASE_INSENSITIVE_ORDER) // Utiliza el nombre como primer criterio y evita diferenciar mayúsculas y minúsculas
+        listaOrdenada.sort(
+                Comparator.comparing(
+                        Contacto::getNombre, String.CASE_INSENSITIVE_ORDER)
                         .thenComparing( // Establece el segundo criterio
-                                Contacto::getApellido, String.CASE_INSENSITIVE_ORDER) // Utiliza el apellido como segundo criterio y evita diferenciar mayúsculas y minúsculas
+                                Contacto::getApellido, String.CASE_INSENSITIVE_ORDER)
         );
-        return listaOrdenada; // Devuelve una lista ordenada
+        return listaOrdenada;
     }
 
     // Busca un contacto por nombre y apellido
-    public String buscarContacto(String nombre, String apellido) {
+    public Contacto buscarContacto(String nombre, String apellido) {
         if (nombre == null || apellido == null) { // Si algun campo esta vacío o es null
             return null;
         }
 
         for (Contacto contacto : contactos) { // Recorre todos los contactos de la lista
+
             if (nombre.strip().equalsIgnoreCase(contacto.getNombre())
-                    && apellido.strip().equalsIgnoreCase(contacto.getApellido())) { // strip - Elimina todos los espacios al principio y final del texto y sin diferenciar mayúsculas y minúsculas
+                    && apellido.strip().equalsIgnoreCase(contacto.getApellido()))
 
-                return contacto.getTelefono(); // Devuelve su teléfono si lo encuentra
+                return contacto;
             }
-        }
 
-        return null;
-    }
+            return null;
+        }
 
     public boolean eliminarContacto(Contacto c) { // Recibe un objeto de tipo contacto
         if (c == null) { // Comprueba si el contacto existe para eliminar

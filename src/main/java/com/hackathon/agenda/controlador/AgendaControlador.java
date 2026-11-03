@@ -202,13 +202,8 @@ public class AgendaControlador {
 
     // Busca en la agenda el contacto con ese nombre y apellido, o null si no existe
     private Contacto obtenerContacto(String nombre, String apellido) {
-        for (Contacto c : agenda.listarContactos()) {
-            if (c.getNombre().equalsIgnoreCase(nombre.strip())
-                    && c.getApellido().equalsIgnoreCase(apellido.strip())) {
-                return c;
-            }
-        }
-        return null;
+
+        return agenda.buscarContacto(nombre, apellido);
     }
 
     // Validaciones del formulario.

@@ -211,22 +211,22 @@ public class AgendaControlador {
         return null;
     }
 
-    // Validaciones del formulario.
-
-    // Nombre y Apellidos
-    // Devuelve el mensaje de error, o null si nombre y apellido están bien
     private String validarNombreYApellido(String nombre, String apellido) {
         if (nombre == null || nombre.isBlank()) {
             return "El nombre no puede estar vacío.";
         }
+        if (nombre.matches(".*\\d.*")){
+            return "El nombre no puede tener numeros.";
+        }
         if (apellido == null || apellido.isBlank()) {
             return "El apellido no puede estar vacío.";
+        }
+        if (apellido.matches(".*\\d.*")){
+            return "El apellido no puede tener numeros.";
         }
         return null;
     }
 
-    // Telefono
-    // Usa la misma regla que el com.hackathon.agenda.modelo (Contacto.telefonoValido) para evitar inconsistencias
     private boolean validarTelefono(String telefono) {
         if (telefono == null || telefono.isBlank()) {
             vista.mostrarError("El teléfono es obligatorio.");

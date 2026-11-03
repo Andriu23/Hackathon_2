@@ -31,7 +31,7 @@ public class VentanaPrincipal extends JFrame {
         setTitle("Agenda Telefónica");
         setContentPane(panelPrincipal);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 750);
+        setSize(600, 550);
         setLocationRelativeTo(null);
 
         modeloTabla = new DefaultTableModel(new String[]{"Nombre", "Apellido", "Teléfono"}, 0) {

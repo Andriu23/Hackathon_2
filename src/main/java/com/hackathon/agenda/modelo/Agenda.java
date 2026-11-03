@@ -6,11 +6,11 @@ import java.util.List;
 
 public class Agenda {
 
-    private List<Contacto> contactos; // Declara una lista que almacena los objetos tipo Contacto
-    private int capacidadMaxima; // Guarda el número máximo de contactos que pueda almacenar la agenda
+    private List<Contacto> contactos;
+    private int capacidadMaxima;
 
-    public Agenda(){ // Constructor con capacidad predeterminada
-        this(10); // Llama a otro constructor y establece una capacidad de 10 contactos
+    public Agenda(){
+        this(10);
     }
 
     public Agenda(int capacidadMaxima) {
@@ -18,8 +18,8 @@ public class Agenda {
         if (capacidadMaxima <= 0) { // Comprueba si la capacidad se válida
             throw new IllegalArgumentException("La capacidad debe ser mayor que cero."); // Muestra un error si la capacidad no es válida
         }
-        this.capacidadMaxima = capacidadMaxima; // Guarda la capacidad recibida
-        this.contactos = new ArrayList<>(); // Crea una lista vacía para almacenar los contactos
+        this.capacidadMaxima = capacidadMaxima;
+        this.contactos = new ArrayList<>();
     }
 
     public boolean añadirContacto(Contacto c) { // Devuelve true o false - Recibe un objeto de tipo Contacto

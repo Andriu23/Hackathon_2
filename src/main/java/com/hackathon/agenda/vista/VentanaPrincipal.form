@@ -169,7 +169,9 @@
         <children>
           <component id="a710" class="javax.swing.JTable" binding="tablaContactos">
             <constraints/>
-            <properties/>
+            <properties>
+              <preferredScrollableViewportSize width="450" height="200"/>
+            </properties>
           </component>
         </children>
       </scrollpane>

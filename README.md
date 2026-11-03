@@ -22,6 +22,7 @@ Proyecto desarrollado por el Equipo 5 en la Hackathon 2 de Generation Colombia.
 - **Java Swing** para la interfaz gráfica
 - **Gradle 9.8.2** (con Gradle Wrapper) para la configuración y gestión del proyecto
 - **IntelliJ IDEA** como entorno de desarrollo, con su GUI Designer para la ventana
+- **UISwingDesigner** Instalar plugin para generar el formulario.
 - **Git y GitHub** para el control de versiones y el tablero del proyecto
 
 ---
@@ -36,7 +37,8 @@ Proyecto desarrollado por el Equipo 5 en la Hackathon 2 de Generation Colombia.
 
 2. Abrir la carpeta `Hackathon_2` en **IntelliJ IDEA**. Al abrirla, IntelliJ reconoce que es un proyecto Gradle y lo sincroniza solo: descarga la versión de Gradle que usa el proyecto por medio del Gradle Wrapper, así que no hace falta instalar Gradle.
 3. Revisar que el proyecto use **Java 21** (en *File > Project Structure > SDK*).
-4. Ejecutar la clase `Main` (`com.hackathon.agenda.Main`) con el botón Run.
+4. Instalar Plugin UISwingDesigner desde File > Plugins > Buscar e instalar. Reiniciar el IDE.
+5. Ejecutar la clase `Main` (`com.hackathon.agenda.Main`) con el botón Run.
 
 La aplicación se ejecuta desde IntelliJ porque la ventana está diseñada con el GUI Designer (archivo `.form`), que IntelliJ se encarga de compilar.
 

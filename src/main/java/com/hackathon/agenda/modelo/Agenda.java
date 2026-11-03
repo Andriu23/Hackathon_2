@@ -1,4 +1,4 @@
-package modelo;
+package com.hackathon.agenda.modelo;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -16,7 +16,7 @@ public class Agenda {
     public Agenda(int capacidadMaxima) {
 
         if (capacidadMaxima <= 0) { // Comprueba si la capacidad se válida
-            System.out.println("La capacidad debe ser mayor que cero."); // Muestra un error si la capacidad no es válida
+            throw new IllegalArgumentException("La capacidad debe ser mayor que cero."); // Muestra un error si la capacidad no es válida
         }
         this.capacidadMaxima = capacidadMaxima; // Guarda la capacidad recibida
         this.contactos = new ArrayList<>(); // Crea una lista vacía para almacenar los contactos
@@ -25,18 +25,24 @@ public class Agenda {
     public boolean añadirContacto(Contacto c) { // Devuelve true o false - Recibe un objeto de tipo Contacto
         if (c == null) { // Comprueba que no se este enviando un contacto vacío
             System.out.println("El contacto no puede ser nulo.");
+            return false;
         }
         if (agendaLlena()) { // Verifica si ya se alcanzó la capacidad máxima.
             System.out.println("La agenda esta llena.");
+            return false;
         }
         if (existeContacto(c)) { // Comprueba que el contacto no esté duplicado.
             System.out.println("El contacto ya esta registrado.");
+            return false;
         }
         contactos.add(c); // Agrega el contacto a ls lista
         return true; // Indica que el registro fue exitoso.
     }
 
     public boolean existeContacto(Contacto c) { // Devuelve true o false - Recibe el contacto que queremos buscar
+        if (c == null) {
+            return false;
+        }
         return contactos.contains(c); // Comprueba si ese contacto se encuentra en la lista.
     }
 
@@ -52,14 +58,17 @@ public class Agenda {
         return listaOrdenada; // Devuelve una lista ordenada
     }
 
+    // Busca un contacto por nombre y apellido
     public String buscarContacto(String nombre, String apellido) {
-        if (nombre == null || apellido == null) { // Si algun campo esta vacío o es null - devuleve null al error de busqueda
+        if (nombre == null || apellido == null) { // Si algun campo esta vacío o es null
             return null;
         }
 
-        for (Contacto contacto : contactos) { // Recorre todos los elementos guardados en la lista
-            if (nombre.equals(contacto.getNombre()) && apellido.equals(contacto.getApellido())) { // Comprueba que los campos sean iguales
-                return contacto.getTelefono(); // Si el nombre y apellido coinciden - devuelve de inmediato el número del contacto
+        for (Contacto contacto : contactos) { // Recorre todos los contactos de la lista
+            if (nombre.strip().equalsIgnoreCase(contacto.getNombre())
+                    && apellido.strip().equalsIgnoreCase(contacto.getApellido())) { // strip - Elimina todos los espacios al principio y final del texto y sin diferenciar mayúsculas y minúsculas
+
+                return contacto.getTelefono(); // Devuelve su teléfono si lo encuentra
             }
         }
 
@@ -74,18 +83,25 @@ public class Agenda {
         return contactos.remove(c); // Elimina el contacto si existe en la lista
     }
 
-    public boolean modificarTelefono(String nombre, String apellido, String nuevoTelefono) { // Busca el contacto por nombre y apellido para cambiarle su número de contacto
-        Contacto temporal = new Contacto(nombre, apellido, nuevoTelefono); // Se crea un objeto temporal de Contacto con los datos recibidos
+    public boolean modificarTelefono(String nombre, String apellido, String nuevoTelefono) {
+        if (nombre == null || apellido == null || nuevoTelefono == null) { // Comprueba que los campos no sean nulo.
+            return false;
+        }
 
-        for (Contacto contacto : contactos) { // Recorre la lista de contactos
-            if (contacto.equals(temporal)) { // Compara el contacto temporal con la lista
-                contacto.setTelefono(nuevoTelefono); // Si el contacto temporal coincide con la lista , permite cambiar el número de contacto
+        if (!Contacto.telefonoValido(nuevoTelefono)) { // Comprueba si el número de contacto cumple el formato establecido.
+            return false;
+        }
 
-                return true; // Devuelve true si la operación se ha realizado con éxito
+        for (Contacto contacto : contactos) { // Recorre todos los contactos almacenados en la lista.
+            if (contacto.getNombre().equalsIgnoreCase(nombre.strip()) // equalsIgnoreCase - Compara sin diferenciar mayúsculas y minúsculas.
+                    && contacto.getApellido().equalsIgnoreCase(apellido.strip())) {
+
+                contacto.setTelefono(nuevoTelefono); // Modifica el teléfono del contacto.
+                return true;
             }
         }
 
-        return false; // Devuelve false si el contacto no existe
+        return false; // Si termina de recorrer la lista y no encuentra el contacto, devuelve false.
     }
 
     public boolean agendaLlena() { // Comprueba que la agenda ya ha alcanzado su limite máximo
